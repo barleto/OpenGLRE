@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Users\Ricardo.Charf\work\personal\OpenGLRE\glfw-3.3.8\build\CMakeFiles\529e5b64191de4640a9c3c5a3698acc2\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="D:\Users\Ricardo.Charf\work\personal\OpenGLRE\glfw-3.3.8\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="D:\Users\Ricardo.Charf\work\personal\OpenGLRE\glfw-3.3.8\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="D:\Users\Ricardo.Charf\work\personal\OpenGLRE\glfw-3.3.8\CMake\GenerateMappings.cmake" />
+    <None Include="D:\Users\Ricardo.Charf\work\personal\OpenGLRE\glfw-3.3.8\build\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{158FE727-F0C0-3775-A113-8CCE7BF47F0E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{20E8ECF5-469D-35F5-9598-E2A236891D37}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
