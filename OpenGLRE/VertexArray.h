@@ -13,11 +13,13 @@ class VertexArray
 {
 private:
 	GLuint mId;
+	unsigned int mElementCount;
 public:
 	VertexArray();
 	~VertexArray();
 	void addBuffer(const VertexBuffer& vb, const IndexBuffer& ib, const VertexBufferLayout& layout);
 	void bind() const;
 	void unbind() const;
+	unsigned int getElementCount() const { return mElementCount; };
 };
 

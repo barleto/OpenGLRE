@@ -14,6 +14,7 @@ VertexArray::~VertexArray()
 void VertexArray::addBuffer(const VertexBuffer& vb, const IndexBuffer& ib, const VertexBufferLayout& layout)
 {
 	this->bind();
+	this->mElementCount = ib.getCount();
 	vb.bind();
 	ib.bind();
 	const auto& elements = layout.getElelements();
