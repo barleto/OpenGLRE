@@ -121,3 +121,8 @@ void ShaderProgram::setUniform4f(const std::string& name, float v0, float v1, fl
 {
     glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
 }
+
+void ShaderProgram::setInt(const std::string& name, int i)
+{
+    glUniform1i(getUniformLocation(name), i);
+}
