@@ -8,7 +8,7 @@
 #include "IndexBuffer.h"
 #include "VertexBufferLayout.h"
 #include "VertexArray.h"
-#include "ShaderProgram.h"
+#include "Shader.h"
 #include "Texture.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -52,7 +52,7 @@ int main()
     }
 
 
-    ShaderProgram basicShader("Basic.shader");
+    Shader basicShader("Basic.shader");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
     // ------------------------------------------------------------------
@@ -84,8 +84,8 @@ int main()
 
     Texture2D texture("TestTexture.png");
     Texture2D texture2("TransparentTexture.png");
-    texture.activate(0);
-    texture2.activate(1);
+    texture.bind(0);
+    texture2.bind(1);
 
     // render loop
     // -----------

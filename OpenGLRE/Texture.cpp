@@ -24,7 +24,7 @@ Texture2D::Texture2D(const std::string& filePath)
 	: mTextureWrapMode(TextureWrapMode::REPEAT)
 {
 	glGenTextures(1, &mId);
-	this->bind();
+	glBindTexture(GL_TEXTURE_2D, mId);
 
 	// set the texture wrapping/filtering options (on the currently bound texture object)
 	auto textWrap = GetGlEnum(mTextureWrapMode);
@@ -57,8 +57,9 @@ Texture2D::~Texture2D()
 	glDeleteTextures(1, &mId);
 }
 
-void Texture2D::bind() const
+void Texture2D::bind(unsigned int slot) const
 {
+	glActiveTexture(GL_TEXTURE0 + slot);
 	glBindTexture(GL_TEXTURE_2D, mId);
 }
 
@@ -70,14 +71,8 @@ void Texture2D::unbind() const
 void Texture2D::setTextureWrapMode(TextureWrapMode textureWrapMode)
 {
 	mTextureWrapMode = textureWrapMode;
-	this->bind();
+	glBindTexture(GL_TEXTURE_2D, mId);
 	auto textWrap = GetGlEnum(mTextureWrapMode);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, textWrap);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, textWrap);
-}
-
-void Texture2D::activate(unsigned int unit)
-{
-	glActiveTexture(GL_TEXTURE0 + unit);
-	this->bind();
 }

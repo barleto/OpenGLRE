@@ -2,13 +2,14 @@
 #include <glad/glad.h>
 #include <string>
 #include <sstream>
+#include <unordered_map>
 
 struct ShaderProgramSource {
 	std::string vertex;
 	std::string fragment;
 };
 
-class ShaderProgram
+class Shader
 {
 private:
 	GLuint mId;
@@ -16,9 +17,10 @@ private:
 	unsigned int getUniformLocation(const std::string& name);
 	GLuint compileShader(GLenum type, const std::string& source);
 	ShaderProgramSource parseShader(const std::string& filepath);
+	std::unordered_map<std::string, GLuint> mUniforLocationCache;
 public:
-	ShaderProgram(const std::string& filepath);
-	~ShaderProgram();
+	Shader(const std::string& filepath);
+	~Shader();
 	void bind() const;
 	void unbind() const;
 

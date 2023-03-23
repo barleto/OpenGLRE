@@ -1,11 +1,11 @@
-#include "ShaderProgram.h"
+#include "Shader.h"
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
 #include <sstream>
 #include <cassert>
 
-ShaderProgramSource ShaderProgram::parseShader(const std::string& filepath)
+ShaderProgramSource Shader::parseShader(const std::string& filepath)
 {
     std::ifstream stream(filepath);
 
@@ -41,7 +41,7 @@ ShaderProgramSource ShaderProgram::parseShader(const std::string& filepath)
     return { ss[0].str(), ss[1].str()};
 }
 
-GLuint ShaderProgram::compileShader(GLenum type, const std::string& source)
+GLuint Shader::compileShader(GLenum type, const std::string& source)
 {
     unsigned int id = glCreateShader(type);
     const char* src = source.c_str();
@@ -63,7 +63,7 @@ GLuint ShaderProgram::compileShader(GLenum type, const std::string& source)
     return id;
 }
 
-ShaderProgram::ShaderProgram(const std::string& filepath) 
+Shader::Shader(const std::string& filepath) 
     : mFilePath(filepath), mId(0)
 {
 
@@ -90,23 +90,28 @@ ShaderProgram::ShaderProgram(const std::string& filepath)
     glDeleteShader(fragmentShader);
 }
 
-ShaderProgram::~ShaderProgram()
+Shader::~Shader()
 {
     glDeleteProgram(mId);
 }
 
-void ShaderProgram::bind() const
+void Shader::bind() const
 {
     glUseProgram(mId);
 }
 
-void ShaderProgram::unbind() const
+void Shader::unbind() const
 {
     glUseProgram(0);
 }
 
-unsigned int ShaderProgram::getUniformLocation(const std::string& name)
+unsigned int Shader::getUniformLocation(const std::string& name)
 {
+    if (mUniforLocationCache.find(name) != mUniforLocationCache.end()) 
+    {
+        return mUniforLocationCache[name];
+    }
+
     auto location = glGetUniformLocation(mId, name.c_str());
     if (location == -1)
     {
@@ -117,12 +122,12 @@ unsigned int ShaderProgram::getUniformLocation(const std::string& name)
 }
 
 
-void ShaderProgram::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
     glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
 }
 
-void ShaderProgram::setInt(const std::string& name, int i)
+void Shader::setInt(const std::string& name, int i)
 {
     glUniform1i(getUniformLocation(name), i);
 }
