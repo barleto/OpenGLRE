@@ -11,6 +11,10 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -18,8 +22,18 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
+void printMat(glm::mat4 mat) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            std::cout << mat[j][i] << ",\t";
+        }
+        std::cout << std::endl;
+    }
+}
+
 int main()
 {
+
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -102,8 +116,11 @@ int main()
 
         // draw our first triangle
         basicShader.bind();
-        basicShader.SetUniform1i("texture1", 0);
-        basicShader.SetUniform1i("texture2", 1);
+        basicShader.setUniform1i("texture1", 0);
+        basicShader.setUniform1i("texture2", 1);
+        glm::mat4 trans = glm::mat4(1.0f);
+        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+        basicShader.setUniformMatrix4fv("transform", trans);
         va.bind();
         //glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

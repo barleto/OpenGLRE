@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <cassert>
+#include <glm/gtc/type_ptr.hpp>
 
 ShaderProgramSource Shader::parseShader(const std::string& filepath)
 {
@@ -127,12 +128,19 @@ void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2,
     glUniform4f(getUniformLocation(name), v0, v1, v2, v3);
 }
 
-void Shader::SetUniform1i(const std::string& name, int i)
+void Shader::setUniform1i(const std::string& name, int i)
 {
     glUniform1i(getUniformLocation(name), i);
 }
 
-void Shader::SetUniform1f(const std::string& name, float f)
+void Shader::setUniform1f(const std::string& name, float f)
 {
     glUniform1f(getUniformLocation(name), f);
+}
+
+void Shader::setUniformMatrix4fv(const std::string& name, glm::mat4& mat)
+{
+    auto a = glm::value_ptr(mat);
+    auto b = getUniformLocation(name);
+    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, glm::value_ptr(mat));
 }
