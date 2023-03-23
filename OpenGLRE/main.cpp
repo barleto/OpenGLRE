@@ -1,23 +1,8 @@
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 #include <iostream>
 #include <string>
 
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexBufferLayout.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "Texture.h"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Renderer.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -71,6 +56,10 @@ int main()
         return -1;
     }
 
+    // configure global opengl state
+    // -----------------------------
+    glEnable(GL_DEPTH_TEST);
+
 
     Shader basicShader("Basic.shader");
 
@@ -120,6 +109,7 @@ int main()
 
     // render loop
     // -----------
+    Renderer renderer;
     while (!glfwWindowShouldClose(window))
     {
         // input
@@ -129,7 +119,7 @@ int main()
         // render
         // ------
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplOpenGL3_NewFrame();
@@ -139,17 +129,18 @@ int main()
         basicShader.bind();
         basicShader.setUniform1i("texture1", 0);
         basicShader.setUniform1i("texture2", 1);
-        glm::mat4 trans = glm::mat4(1.0f);
-        trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-        basicShader.setUniformMatrix4fv("transform", trans);
-        va.bind();
-        //glDrawArrays(GL_TRIANGLES, 0, 6);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        // glBindVertexArray(0); // no need to unbind it every time 
+        glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 projection = glm::mat4(1.0f);
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        basicShader.setUniformMatrix4fv("model", model);
+        basicShader.setUniformMatrix4fv("view", view);
+        basicShader.setUniformMatrix4fv("projection", projection);
 
-        ImGui::Begin("I am an TmGUI window!");
-        ImGui::Text("And I am a text!");
-        ImGui::End();
+        // Make a draw call
+        renderer.draw(va, basicShader);
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
