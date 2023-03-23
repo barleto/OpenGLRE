@@ -102,8 +102,8 @@ int main()
 
         // draw our first triangle
         basicShader.bind();
-        basicShader.setInt("texture1", 0);
-        basicShader.setInt("texture2", 1);
+        basicShader.SetUniform1i("texture1", 0);
+        basicShader.SetUniform1i("texture2", 1);
         va.bind();
         //glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
